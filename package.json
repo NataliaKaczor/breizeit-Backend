@@ -1,0 +1,26 @@
+{
+  "name": "breizeit-backend",
+  "version": "1.0.0",
+  "description": "Backend REST-API",
+  "keywords": [
+    "backend"
+  ],
+  "homepage": "https://github.com/NataliaKaczor/breizeit-Backend#readme",
+  "bugs": {
+    "url": "https://github.com/NataliaKaczor/breizeit-Backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NataliaKaczor/breizeit-Backend.git"
+  },
+  "license": "ISC",
+  "author": "N. A. Kaczor",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
