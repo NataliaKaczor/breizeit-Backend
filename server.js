@@ -1,11 +1,23 @@
 const express = require('express');
 const routes = require('./routes');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 app.use('/', routes);
+
+// connect to mongoDB
+mongoose.connect(process.env.DB_CONNECTION, { dbName: process.env.DATABASE });
+const db = mongoose.connection;
+db.on('error', err => {
+  console.log(err);
+});
+db.on('open', () => {
+    console.log('connected to DB');
+});
 
 app.listen(PORT, (error) => {
     if (error) {
