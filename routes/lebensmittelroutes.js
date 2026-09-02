@@ -32,4 +32,22 @@ router.post('/', async (req, res) =>{
     }
 });
 
+// ein Lebensmittel loeschen
+router.delete('/lebensmittel/:id', async (req, res) => {
+    try {
+        const result = await Lebensmittel.deleteOne({
+            _id: req.params.id
+        });
+
+        res.status(204);
+        res.send();
+
+    } catch {
+        res.status(404);
+        res.send({
+            error: "Lebensmittel existiert nicht!"
+        });
+    }
+});
+
 module.exports = router;
