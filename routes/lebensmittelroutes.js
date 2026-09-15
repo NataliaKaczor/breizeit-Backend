@@ -7,10 +7,22 @@ router.get('/lebensmittel', async (req, res) => {
     const alleLebensmittel = await Lebensmittel.find();
     res.send(alleLebensmittel);
 });
+//  ein Lebensmittel auslesen
+router.get('/lebensmittel/:id', async (req, res) => {
+    try {
+        const lebensmittel = await Lebensmittel.findById(req.params.id);
+        res.send(lebensmittel);
+    } catch (error) {
+        res.status(404);
+        res.send({
+            error: "Lebensmittel nicht gefunden."
+        });
+    }
+});
 
 
 // ein neues Lebensmittel eintragen 
-router.post('/', async (req, res) =>{
+router.post('/', async (req, res) => {
     try {
         const neuerLebensmittel = new Lebensmittel({
             name: req.body.name,
@@ -24,7 +36,8 @@ router.post('/', async (req, res) =>{
         const gespeichertesLebensmittel = await neuerLebensmittel.save();
         console.log('Neues Lebensmittel erstellt:', gespeichertesLebensmittel._id);
         res.status(201);
-        res.send(gespeichertesLebensmittel);} 
+        res.send(gespeichertesLebensmittel);
+    }
 
     catch (error) {
         res.status(400);
