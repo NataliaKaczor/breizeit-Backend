@@ -40,8 +40,18 @@ router.post('/', async (req, res) => {
     }
 
     catch (error) {
+        if (error.code === 11000) {
+            res.status(409);
+            res.send({
+                error: "Dieses Lebensmittel existiert bereits."
+            });
+            return;
+        }
+
         res.status(400);
-        res.send({ error: "Das Lebensmittel konnte nicht erstellt werden." });
+        res.send({
+            error: "Das Lebensmittel konnte nicht erstellt werden."
+        });
     }
 });
 
