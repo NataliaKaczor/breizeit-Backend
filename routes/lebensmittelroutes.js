@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Lebensmittel = require('../models/lebensmittel')
-
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); // wenn datei dannlegt multer diese in /uploads Ordner
 //  alle Lebensmittel auslesen
 router.get('/lebensmittel', async (req, res) => {
     const alleLebensmittel = await Lebensmittel.find();
@@ -22,7 +23,10 @@ router.get('/lebensmittel/:id', async (req, res) => {
 
 
 // ein neues Lebensmittel eintragen 
-router.post('/', async (req, res) => {
+router.post('/', upload.single('bild'), async (req, res) => {
+    console.log('Empfangene Datei:', req.file);
+    console.log('Empfangene Daten:', req.body);
+    console.log('Bild-Pfad zum Speichern:', req.file.path);
     try {
         const neuerLebensmittel = new Lebensmittel({
             name: req.body.name,
@@ -30,7 +34,7 @@ router.post('/', async (req, res) => {
             altersempfehlung: req.body.altersempfehlung,
             allergen: req.body.allergen,
             beschreibung: req.body.beschreibung,
-            bild: req.body.bild
+            bild: req.file.path
         });
 
         const gespeichertesLebensmittel = await neuerLebensmittel.save();
