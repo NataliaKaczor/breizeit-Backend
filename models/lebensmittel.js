@@ -1,16 +1,20 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
-    name:{
+    name: {
         type: String,
         required: true,
         unique:true
     },
-    kategorie:{
+    kategorie: {
         type: String,
-        enum: ["Obst","Gemüse","Getreide","Fleisch","Fisch","Milchprodukte","andere Kategorie"]
+        enum: ["Obst","Gemüse","Getreide","Fleisch","Fisch","Milchprodukte","andere Kategorie"],
+        required: true
     },
-    altersempfehlung: String,
+    altersempfehlung: {
+        type: String,
+        required: true,
+    },
     allergen: {
         type : String,
         enum:["keines", "Milch","Ei","Nüsse","Fisch","Gluten"],
