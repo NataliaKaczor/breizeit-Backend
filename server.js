@@ -9,6 +9,10 @@ const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
+
+// Hochgeladene Bilder für den Browser bereitstellen
+app.use('/uploads', express.static('uploads'));
+
 app.use('/', routes);
 
 // connect to mongoDB

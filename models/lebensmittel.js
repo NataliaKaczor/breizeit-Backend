@@ -17,7 +17,10 @@ const schema = new mongoose.Schema({
         required: true
     },
     beschreibung: String, 
-    bild: String
+    bild:{
+        type: String,
+        required: true
+    } 
 });
 
 module.exports = mongoose.model('Lebensmittel', schema);
