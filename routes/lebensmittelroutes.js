@@ -3,6 +3,8 @@ const router = express.Router();
 const Lebensmittel = require('../models/lebensmittel')
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // wenn datei dannlegt multer diese in /uploads Ordner
+
+
 //  alle Lebensmittel auslesen
 router.get('/lebensmittel', async (req, res) => {
     const alleLebensmittel = await Lebensmittel.find();
@@ -28,6 +30,18 @@ router.post('/', upload.single('bild'), async (req, res) => {
     console.log('Empfangene Daten:', req.body);
     console.log('Bild-Pfad zum Speichern:', req.file.path);
     try {
+
+        const vorhandenesLebensmittel = await Lebensmittel.findOne({ name: req.body.name });
+
+        if (vorhandenesLebensmittel) {
+            res.status(409);
+            res.send({
+                error: "Dieses Lebensmittel existiert bereits.",
+                lebensmittel: vorhandenesLebensmittel
+            });
+            return;
+        }
+
         const neuerLebensmittel = new Lebensmittel({
             name: req.body.name,
             kategorie: req.body.kategorie,
@@ -68,6 +82,39 @@ router.delete('/lebensmittel/:id', async (req, res) => {
 
         res.status(204);
         res.send();
+
+    } catch {
+        res.status(404);
+        res.send({
+            error: "Lebensmittel existiert nicht!"
+        });
+    }
+});
+
+// ein Lebensmittel aktualisieren
+router.put('/lebensmittel/:id', upload.single('bild'), async (req, res) => {
+    try {
+        // lebensmittel wird anhand ID gesucht 
+        const lebensmittel = await Lebensmittel.findOne({ _id: req.params.id });
+
+        if (req.body.name) lebensmittel.name = req.body.name;
+        if (req.body.kategorie) lebensmittel.kategorie = req.body.kategorie;
+        if (req.body.altersempfehlung) lebensmittel.altersempfehlung = req.body.altersempfehlung;
+        if (req.body.allergen) lebensmittel.allergen = req.body.allergen;
+
+        // beschreibung darf leer bleiben, da required= false 
+        if (req.body.beschreibung !== undefined) { 
+            lebensmittel.beschreibung = req.body.beschreibung;
+        }
+        // neues Bild nür übernehmen, wenn hochgeladen .. sonst bleibt altes
+        if (req.file) lebensmittel.bild = req.file.path;
+
+        await Lebensmittel.updateOne(
+            { _id: req.params.id },
+            lebensmittel
+        );
+
+        res.send(lebensmittel);
 
     } catch {
         res.status(404);
