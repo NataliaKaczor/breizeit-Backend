@@ -1,5 +1,6 @@
 const express = require('express');
 const routes = require('./routes/lebensmittelroutes');
+const breirezeptroutes = require('./routes/breirezeptroutes');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 app.use('/', routes);
+app.use(breirezeptroutes);
 
 
 // connect to mongoDB

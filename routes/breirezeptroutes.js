@@ -30,5 +30,54 @@ router.get('/brei-rezepte/:id', async (req, res) => {
     }
 });
 
+router.post('/', async (req, res) => {
+
+    try {
+
+        const neuesBreiRezept = new BreiRezept({
+            name: req.body.name,
+            zutaten: req.body.zutaten,
+            altersempfehlung: req.body.altersempfehlung,
+            beschreibung: req.body.beschreibung
+        });
+
+        const gespeichertesBreiRezept = await neuesBreiRezept.save();
+
+        console.log(
+            'Neues Brei-Rezept erstellt:',
+            gespeichertesBreiRezept._id
+        );
+        res.status(201);
+        res.send(gespeichertesBreiRezept);
+
+    } catch (error) {
+
+        res.status(400);
+        res.send({
+            error: "Das Brei-Rezept konnte nicht erstellt werden."
+        });
+    }
+});
+
+router.delete('/brei-rezepte/:id', async (req, res) => {
+
+    try{
+
+        const result = await BreiRezept.deleteOne({
+            _id: req.params.id
+        });
+
+        res.status(204);
+        res.send();
+
+    } catch {
+
+        res.status(404);
+        res.send({
+            error: "Brei-Rezept existiert nicht!"
+        });
+    }
+});
+
 
 module.exports = router;
