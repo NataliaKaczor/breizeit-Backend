@@ -47,6 +47,7 @@ router.post('/', upload.single('bild'), async (req, res) => {
             kategorie: req.body.kategorie,
             altersempfehlung: req.body.altersempfehlung,
             allergen: req.body.allergen,
+            vitamine: JSON.parse(req.body.vitamine),
             beschreibung: req.body.beschreibung,
             bild: req.file.path
         });
@@ -101,9 +102,13 @@ router.put('/lebensmittel/:id', upload.single('bild'), async (req, res) => {
         if (req.body.kategorie) lebensmittel.kategorie = req.body.kategorie;
         if (req.body.altersempfehlung) lebensmittel.altersempfehlung = req.body.altersempfehlung;
         if (req.body.allergen) lebensmittel.allergen = req.body.allergen;
-
-        // beschreibung darf leer bleiben, da required= false 
-        if (req.body.beschreibung !== undefined) { 
+       
+        // vitamine dürfen  leer bleiben
+        if (req.body.vitamine !== undefined) {
+            lebensmittel.vitamine = JSON.parse(req.body.vitamine);
+        }
+        // beschreibung darf leer bleiben
+        if (req.body.beschreibung !== undefined) {
             lebensmittel.beschreibung = req.body.beschreibung;
         }
         // neues Bild nür übernehmen, wenn hochgeladen .. sonst bleibt altes

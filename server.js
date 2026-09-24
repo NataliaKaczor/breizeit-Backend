@@ -15,6 +15,7 @@ app.use('/uploads', express.static('uploads'));
 
 app.use('/', routes);
 
+
 // connect to mongoDB
 mongoose.connect(process.env.DB_CONNECTION, { dbName: process.env.DATABASE });
 const db = mongoose.connection;
