@@ -20,6 +20,7 @@ const schema = new mongoose.Schema({
         enum:["keines", "Milch","Ei","Nüsse","Fisch","Gluten"],
         required: true
     },
+    vitamine: [String],
     beschreibung: String, 
     bild:{
         type: String,
